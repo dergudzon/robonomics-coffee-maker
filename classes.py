@@ -7,7 +7,9 @@ import yaml
 
 # stores allow list values
 class AllowList:
-    def __init__(self, allow_list: tp.List[str], allow_list_enforced: bool = True) -> None:
+    def __init__(
+        self, allow_list: tp.List[str], allow_list_enforced: bool = True
+    ) -> None:
         self.allow_list: tp.List[str] = allow_list
         self.allow_list_hash: str = io_funcs.allow_list_hash()
         self.allow_list_is_valid: bool = self._validate_allow_list()
@@ -55,7 +57,7 @@ class Session:
         ipfs_client = ipfshttpclient.connect()
         filename = f"logs/{self.session_timestamp}.yaml"
         res = ipfs_client.add(filename)
-        self.session_log_hash = res['Hash']
+        self.session_log_hash = res["Hash"]
 
     # todo
     # push hash of the session log to Robonomics network

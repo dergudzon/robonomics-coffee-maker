@@ -24,7 +24,7 @@ def read_allow_list() -> tp.List[str]:
     if not path.exists("allow_list.yaml"):
         print("allow_list.yaml not found")
         return []
-    
+
     with open("allow_list.yaml", "r") as file:
         try:
             return yaml.safe_load(file)["allowed_ids"]

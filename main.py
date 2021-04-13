@@ -5,7 +5,7 @@ import sys
 import typing as tp
 
 # load up configuration
-config: tp.Dict[str:str] = io_funcs.read_config()
+config: tp.Dict[str, str] = io_funcs.read_config()
 if not config:
     sys.exit("Config load error")
 
@@ -18,6 +18,6 @@ if not allow_list_data:
 allow_list = AllowList(allow_list_data, config["use_allow_list"])
 
 # entry point
-if __name__ == '__main__':
+if __name__ == "__main__":
     while True:
         pass

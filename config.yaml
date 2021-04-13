@@ -1,0 +1,3 @@
+config:
+  use_allow_list: true
+  log_sessions: true

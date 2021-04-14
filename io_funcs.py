@@ -5,8 +5,9 @@ import typing as tp
 from os import path
 
 
-# load up the configuration file
 def read_config() -> tp.Dict[str, str]:
+    """load up the configuration file"""
+
     if not path.exists("config.yaml"):
         print("config.yaml not found")
         return {}
@@ -19,8 +20,9 @@ def read_config() -> tp.Dict[str, str]:
             return {}
 
 
-# load up the allow list
 def read_allow_list() -> tp.List[str]:
+    """load up the allow list"""
+
     if not path.exists("allow_list.yaml"):
         print("allow_list.yaml not found")
         return []
@@ -33,8 +35,9 @@ def read_allow_list() -> tp.List[str]:
             return []
 
 
-# get an sha256 checksum of the allow_list.yaml file
 def allow_list_hash() -> str:
+    """get an sha256 checksum of the allow_list.yaml file"""
+
     with open("allow_list.yaml", "rb") as file:
         allow_list_bytes = file.read()
         check_sum = sha256(allow_list_bytes).hexdigest()
@@ -42,6 +45,7 @@ def allow_list_hash() -> str:
 
 
 # todo
-# gets the latest hash for an allow list from robonomics network
 def get_robonomics_hash() -> str:
+    """gets the latest hash for an allow list from robonomics network"""
+
     pass

@@ -5,7 +5,7 @@ import typing as tp
 from os import path
 
 
-def read_config() -> tp.Dict[str, str]:
+def read_config() -> tp.Dict[str, tp.Any]:
     """load up the configuration file"""
 
     if not path.exists("config.yaml"):

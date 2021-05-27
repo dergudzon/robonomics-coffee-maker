@@ -21,19 +21,20 @@ else:
     logging.info("Config load successful")
 
 # load up allow list
-allow_list_data: tp.List[str] = io_funcs.read_allow_list()
-if not allow_list_data:
-    logging.critical("Allow list load error, exiting")
-    sys.exit()
-else:
-    logging.info("Allow list load successful")
+if config["use_allow_list"]:
+    allow_list_data: tp.List[str] = io_funcs.read_allow_list()
+    if not allow_list_data:
+        logging.critical("Allow list load error, exiting")
+        sys.exit()
+    else:
+        # initialize an instance of AllowList object
+        allow_list = AllowList(allow_list_data, config["use_allow_list"])
+        logging.info("Allow list load successful")
 
-# initialize an instance of AllowList object
-allow_list = AllowList(allow_list_data, config["use_allow_list"])
 
 # initialize an instance of CoffeeMachine object
 coffee_machine = CoffeeMachine(
-    gpio_outputs=[0, 18, 0, 0, 0, 0, 0]
+    gpio_outputs=[0, 21, 0, 0, 0, 0, 0]
 )
 
 # entry point
@@ -51,12 +52,13 @@ if __name__ == "__main__":
                 logging.info(f"Found NFC tag with UID {tag_id}. Stopped polling")
                 break
 
-        # check if user is allowed to use the machine
-        if not allow_list.usage_allowed(tag_id):
-            logging.warning(f"UID {tag_id} is not in the allow list. Usage declined.")
-            continue
-        else:
-            logging.info(f"UID {tag_id} allowed. Continuing.")
+        if config["use_allow_list"]:
+            # check if user is allowed to use the machine
+            if not allow_list.usage_allowed(tag_id):
+                logging.warning(f"UID {tag_id} is not in the allow list. Usage declined.")
+                continue
+            else:
+                logging.info(f"UID {tag_id} allowed. Continuing.")
 
         # make a coffee if usage allowed
         operation = coffee_machine.make_a_coffee()

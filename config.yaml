@@ -1,3 +1,9 @@
-config:
-  use_allow_list: true
-  log_sessions: true
+use_acl: true
+robonomics:
+  substrate:
+    url: "ws://127.0.0.1:9944"
+  acl:
+    dt_id: '0'
+    acl_topic_name: 'acl_____________________________'
+    logs_topic_name: 'logs____________________________'
+log_sessions: true

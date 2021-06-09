@@ -22,3 +22,5 @@ typed-ast==1.4.3
 typing-extensions==3.7.4.3
 urllib3==1.26.4
 varint==1.0.2
+
+scalecodec~=0.11.9

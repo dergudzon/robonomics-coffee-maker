@@ -1,6 +1,7 @@
 import rpi_funcs as rpi
 import io_funcs
-from classes import AllowList, CoffeeMachine
+from robonomics_daos_toolkit.acl import ACL
+from classes import CoffeeMachine
 import sys
 import typing as tp
 import logging
@@ -18,24 +19,22 @@ if not config:
     logging.critical("Config load error, exiting")
     sys.exit()
 else:
-    logging.info("Config load successful")
-
-# load up allow list
-if config["use_allow_list"]:
-    allow_list_data: tp.List[str] = io_funcs.read_allow_list()
-    if not allow_list_data:
-        logging.critical("Allow list load error, exiting")
-        sys.exit()
-    else:
-        # initialize an instance of AllowList object
-        allow_list = AllowList(allow_list_data, config["use_allow_list"])
-        logging.info("Allow list load successful")
-
+    logging.info(f"Config load successful\n{config}")
 
 # initialize an instance of CoffeeMachine object
 coffee_machine = CoffeeMachine(
     gpio_outputs=[0, 21, 0, 0, 0, 0, 0]
 )
+
+if config["use_acl"]:
+    # initiate an instance of ACL class based on digital twin of a device
+    logging.info("initiating ACL class")
+    acl_obj = ACL(config['robonomics'])
+    if not acl_obj:
+        logging.critical("ACL instance error, exiting")
+        sys.exit()
+    else:
+        logging.info("ACL initiated")
 
 # entry point
 if __name__ == "__main__":
@@ -52,9 +51,9 @@ if __name__ == "__main__":
                 logging.info(f"Found NFC tag with UID {tag_id}. Stopped polling")
                 break
 
-        if config["use_allow_list"]:
+        if config["use_acl"]:
             # check if user is allowed to use the machine
-            if not allow_list.usage_allowed(tag_id):
+            if not acl_obj.usage_allowed(tag_id):
                 logging.warning(f"UID {tag_id} is not in the allow list. Usage declined.")
                 continue
             else:

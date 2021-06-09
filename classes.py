@@ -1,4 +1,3 @@
-import io_funcs
 import typing as tp
 import ipfshttpclient
 from datetime import datetime as dt
@@ -12,44 +11,6 @@ logging.basicConfig(
     filename="daemon.log",
     format="%(asctime)s %(levelname)s: %(message)s"
 )
-
-
-class AllowList:
-    """stores allow list values"""
-
-    def __init__(
-        self, allow_list: tp.List[str], allow_list_enforced: bool = True
-    ) -> None:
-        self.allow_list: tp.List[str] = allow_list
-        self.allow_list_hash: str = io_funcs.allow_list_hash()
-        self.allow_list_is_valid: bool = self._validate_allow_list()
-        self.allow_list_enforced: bool = allow_list_enforced
-        self.robonomics_allow_list_hash = io_funcs.get_robonomics_hash
-
-        logging.info("initialized AllowList instance")
-
-    # todo
-    def _validate_allow_list(self) -> bool:
-        """make a request to robonomics network in order to validate the local copy of the allow list"""
-
-        return self.allow_list_hash == self.robonomics_allow_list_hash
-
-    def usage_allowed(self, user_id: str) -> bool:
-        """check, if certain ID is allowed to use the machine by the policy"""
-
-        if not self.allow_list_enforced:
-            return True
-        else:
-            return user_id in self.allow_list
-
-    # todo
-    def fetch_allow_list(self) -> None:
-        """fetch allow list from ipfs"""
-
-        logging.info("fetching valid allow list")
-        ipfs_client = ipfshttpclient.connect()
-        res = ipfs_client.get(self.robonomics_allow_list_hash)
-        pass
 
 
 class Session:

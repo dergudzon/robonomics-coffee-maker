@@ -42,7 +42,7 @@ class ACTIncomeTracker:
 
         logging.info("Asset subscriber started. Waiting for money incomes")
 
-    def _handle_incomes(self, obj: tp.Dict[str, tp.Union[int, bool]], update_nr: int, subscription_id: int):
+    def _handle_incomes(self, obj: tp.Any, update_nr: int, subscription_id: int):
         """
         Check ACT balance update and set Python Event on money income
 
@@ -56,9 +56,8 @@ class ACTIncomeTracker:
             self._current_act_balance = _new_act_balance
 
         if update_nr > 0:
-            logging.info("ACT balance changed!")
             if _new_act_balance > self._current_act_balance:
-                logging.info(f"Money income: {_new_act_balance - self._current_act_balance} ACT tokens")
+                logging.info(f"Money income: {_new_act_balance - self._current_act_balance} ACT token(s)")
                 self._current_act_balance = _new_act_balance
                 self.act_income_event.set()
 

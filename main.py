@@ -39,8 +39,14 @@ while True:
 
     if operation["success"]:
         logging.info("Operation Successful.")
-        ri_interface.record_datalog(f"Successfully made some coffee for Vourhey")
+        try:
+            ri_interface.record_datalog(f"Successfully made some coffee for Vourhey")
+        except Exception as e:
+            logging.error(f"Failed to record Datalog: {e}")
     else:
         logging.error(f"Operation Failed.")
-        ri_interface.record_datalog(f"Failed to make coffee: {operation['message']}")
+        try:
+            ri_interface.record_datalog(f"Failed to make coffee: {operation['message']}")
+        except Exception as e:
+            logging.error(f"Failed to record Datalog: {e}")
     logging.info("Session over")

@@ -4,8 +4,7 @@ import logging
 
 # set up logging
 logging.basicConfig(
-    level=logging.DEBUG,
-    filename="daemon.log",
+    level=logging.INFO,
     format="%(asctime)s %(levelname)s: %(message)s"
 )
 

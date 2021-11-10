@@ -23,9 +23,6 @@ coffee_machine = CoffeeMachine(
 seed: str = sys.argv[1]
 keypair = Keypair.create_from_mnemonic(seed, ss58_format=2)
 
-# Initiate RobonomicsInterface instance
-ri_interface = RI(seed=seed)
-
 # Start income tracker
 income_tracker = ACTIncomeTracker(keypair.ss58_address)
 
@@ -40,12 +37,16 @@ while True:
     if operation["success"]:
         logging.info("Operation Successful.")
         try:
-            ri_interface.record_datalog(f"Successfully made some coffee for Vourhey")
+            # Initiate RobonomicsInterface instance
+            ri_interface = RI(seed=seed)
+            ri_interface.record_datalog(f"Successfully made some coffee!")
         except Exception as e:
             logging.error(f"Failed to record Datalog: {e}")
     else:
         logging.error(f"Operation Failed.")
         try:
+            # Initiate RobonomicsInterface instance
+            ri_interface = RI(seed=seed)
             ri_interface.record_datalog(f"Failed to make coffee: {operation['message']}")
         except Exception as e:
             logging.error(f"Failed to record Datalog: {e}")

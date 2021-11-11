@@ -63,22 +63,17 @@ You can use any wires, but keep im mind that in the end there should be an M-wir
 ![Coffee-machine Overview](media/coffee-machine-overview.png)
 
 #### 4. Circuit  
-Overall circuit is presented below, but there is a trick here. The control algorithm of the coffee-machine is pretty 
-sensitive to the voltage. So the idea we followed was measuring the potential difference of the contacts of the button
-unpressed and then designing a transistor key with 3.3V (GPIO output value) control voltage and **N** *V* load 
-voltage where **N** is the potential difference. This tutorial won't go into scheming details, there are methods to 
-design transistor keys ([here](https://www.nutsvolts.com/magazine/article/may2015_Secura) and [here](https://www.electronics-tutorials.ws/transistor/tran_4.html), 
-one better use these sources to design a key using the best suitable components),
-for our implementation we used R<sub>1</sub>=1k&Omega; , R<sub>2</sub>=30&Omega;, Transistor (*h<sub>fe</sub>*=40,
-*U<sub>ce</sub>*>5V, *I<sub>c</sub>*>0.15A ) and a small 3.3V diode in
-base circuit found in the storage of our lab:)
+Overall circuit is presented below, this is a very simple transistor switch, we used R<sub>1</sub>=1k&Omega;, 
+Transistor (*h<sub>fe</sub>*=40, *U<sub>ce</sub>*>5V, *I<sub>c</sub>*>0.015A, sample [here](https://alltransistors.com/adv/pdfdatasheet_rca/2n1613.pdf), but almost any general 
+transistor suites, since this is a switch) and a small 3.3V diode in base circuit found in the storage of our lab:) One 
+can use a MOSFET transistor as well.
 
 ![Circuit](media/circuit.png)
 
 ![Circuit Assembled](media/circuit-assembled.png)
 
 #### 5. Connect coffee-machine and RPI
-Connect wires marked as *RPI GND* and *RPI GPIO Pin* to pins __ and __ respectively. RPI GPIO scheme is presented below.
+Connect wires marked as *RPI GND* and *RPI GPIO Pin* to pins **GND** and **21** respectively. RPI GPIO scheme is presented below.
 Wires marked as *Button+* and *Button-* should be connected to the left button contact and right button contact 
 respectively.
 
@@ -137,7 +132,7 @@ derived from seed and for token id `3077`) the RPI triggers GPIO pin 18 and coff
 ## Things to point out
 - This is a POC of a blockchain-driven IoT device, it has things to improve, wires to hide and functionality to implement
 - Token ID, the one, coffee-machine is waiting to receive is edited
-[here](https://github.com/Multi-Agent-io/robonomics-coffee-maker/blob/master/statemine_monitor.py#L27)
+[here](https://github.com/Multi-Agent-io/robonomics-coffee-maker/blob/master/statemine_monitor.py#L27), so you can use your own token
 - Right now the only thing that matters for income tracker is the positive difference between current and previous
 asset balance. This may be filtered [code](https://github.com/Multi-Agent-io/robonomics-coffee-maker/blob/master/statemine_monitor.py#L59).
 - Powered by [Robonomics](https://robonomics.network/), made by [Multi-Agent.io](https://multi-agent.io/).

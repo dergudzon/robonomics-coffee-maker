@@ -46,3 +46,46 @@ class CoffeeMachine:
 
         logging.info("Made a coffee")
         return operation
+
+
+class SaecoCoffeeMachine:
+    """handles operating the coffee maker using RPI's serial port"""
+
+    def __init__(self) -> None:
+        import serial
+
+        self.ser = serial.Serial('/dev/ttyS0', 9600)
+        self.button_map = {
+            # "power": 0,
+            "espresso": b'1',
+            "coffe": b'2',
+            "americano": b'3',
+            "capuccino": b'4',
+            "latte": b'5',
+            "cofe_au_lait": b'6'
+        }
+
+        # apply provided values to their buttons
+        # for value in zip(gpio_outputs, self.button_map.keys()):
+        #     if value[0]:
+        #         self.button_map[value[1]] = value[0]
+
+        logging.info("initialized SaecoCoffeeMachine instance")
+
+    def make_a_coffee(self, coffee_name) -> tp.Dict[str, tp.Any]:
+        """
+        pours a cup of coffee
+
+        :returns: {"success": bool, "message": str}"""
+        
+        self.ser.write(self.button_map[coffee_name])
+        
+        # rpi.trigger_transistor(self.button_map[coffee_name])
+
+        operation = {
+            "success": True,
+            "message": "operation success"
+        }
+
+        logging.info("Made a coffee")
+        return operation

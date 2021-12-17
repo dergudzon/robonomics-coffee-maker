@@ -36,12 +36,12 @@ def main(config, coffee_name):
         # income_tracker.act_income_event.wait()
         # income_tracker.act_income_event.clear()
     operation = coffee_machine.make_a_coffee(coffee_name)
-
+    mnemonic = config.get('secrets', 'MNEMONIC_SEED')
     if operation["success"]:
         logging.info("Operation Successful.")
         try:
             # Initiate RobonomicsInterface instance
-            ri_interface = RI(seed=config['mnemonic'])
+            ri_interface = RI(seed=mnemonic)
             ri_interface.record_datalog(f"Successfully made some coffee!")
         except Exception as e:
             logging.error(f"Failed to record Datalog: {e}")
@@ -49,7 +49,7 @@ def main(config, coffee_name):
         logging.error(f"Operation Failed.")
         try:
             # Initiate RobonomicsInterface instance
-            ri_interface = RI(seed=config['mnemonic'])
+            ri_interface = RI(seed=mnemonic)
             ri_interface.record_datalog(f"Failed to make coffee: {operation['message']}")
         except Exception as e:
             logging.error(f"Failed to record Datalog: {e}")
@@ -57,6 +57,8 @@ def main(config, coffee_name):
 
 
 if __name__:
-    config = read_config('config.config')
+    # config = read_config('config.config')
+    config = configparser.ConfigParser()
+    config.read('config.config')
     coffee_name: str = sys.argv[1]
     main(config, coffee_name)
